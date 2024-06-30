@@ -76,6 +76,7 @@ header {
     }
 
         header .btn-start:hover {
+            color: black;
             background-color: #4c64b0;
         }
 
@@ -111,15 +112,15 @@ header {
 
     header .logo-text {
         font-family: 'Lobster', sans-serif;
-        font-size: 26px; /* Ajusta el tamaño de la fuente según tus necesidades */
+        font-size: 26px;
         color: #000000;
         float: left;
-        margin-top: 12px; /* Ajusta el margen superior según sea necesario */
-        margin-right: 10px; /* Espacio entre el texto y el logo */
+        margin-top: 12px;
+        margin-right: 10px;
     }
 
     header .logo img {
-        height: 50px; /* Reduced height */
+        height: 50px;
         margin-top: 8px;
         width: auto;
     }
@@ -167,7 +168,7 @@ footer {
 
 footer .logo-text {
     font-family: 'Lobster', sans-serif;
-    font-size: 26px; /* Ajusta el tamaño de la fuente según tus necesidades */
+    font-size: 26px; 
     color: #000000;
 }
 
@@ -367,11 +368,11 @@ main {
     }
 
 .service-gif {
-    width: 300px; /* Ajusta el tamaño según tus necesidades */
+    width: 300px;
     height: auto;
     display: block;
-    margin: 10px auto; /* Centra el GIF */
-    border-radius: 10px; /* Opcional: agrega un borde redondeado */
+    margin: 10px auto;
+    border-radius: 10px;
 }
 
 .form-container {
@@ -571,12 +572,12 @@ input[type="number"], input[type="date"] {
 
 .feedback-track {
     display: flex;
-    width: 200%; /* Duplicamos el ancho para acomodar los elementos duplicados */
-    animation: scroll 60s linear infinite; /* Aumentamos la duración para un movimiento más suave */
+    width: 200%;
+    animation: scroll 60s linear infinite;
 }
 
 .feedback-item {
-    flex: 0 0 calc(16.666% - 20px); /* Ajustamos el ancho para 6 items visibles a la vez */
+    flex: 0 0 calc(16.666% - 20px);
     margin: 0 10px;
     background-color: rgba(255, 255, 255, 0.1);
     border-radius: 10px;
@@ -599,7 +600,7 @@ input[type="number"], input[type="date"] {
     }
 
     100% {
-        transform: translateX(-50%); /* Movemos solo la mitad, ya que tenemos elementos duplicados */
+        transform: translateX(-50%);
     }
 }
 
