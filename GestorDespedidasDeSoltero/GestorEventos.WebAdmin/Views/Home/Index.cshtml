@@ -1,0 +1,52 @@
+﻿@{
+    ViewData["Title"] = "Administrador | FarewellFest";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="https://localhost:7233/css/site.css">
+}
+
+<header>
+    <div class="container">
+        <a href="/" class="logo">
+            <img src="https://localhost:7233/images/logo.png" alt="FarewellFest Logo">
+        </a>
+        <a href="/" class="logo-text">FarewellFest</a>
+        <nav>
+            <ul>
+                <li><a href="/Servicios"><i class="fa-solid fa-spa"></i>&nbsp;&nbsp;Administrar servicios</a></li>
+                <li><a href="/Eventos"><i class="fa-solid fa-calendar-days"></i></i>&nbsp;&nbsp;Administrar eventos</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<section class="mainhome">
+    <div class="container">
+        <h1>
+            @{
+                var hora = DateTime.Now.Hour;
+                string saludo;
+
+                if (hora >= 5 && hora < 12)
+                    saludo = "Buenos días";
+                else if (hora >= 12 && hora < 18)
+                    saludo = "Buenas tardes";
+                else
+                    saludo = "Buenas noches";
+            }
+
+            ¡@saludo, Administrador!
+        </h1>
+    </div>
+</section>
+
+@section Scripts {
+    <script src="https://localhost:7233/js/site.js"></script>
+}

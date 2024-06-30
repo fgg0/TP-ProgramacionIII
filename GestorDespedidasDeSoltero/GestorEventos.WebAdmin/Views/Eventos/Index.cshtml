@@ -1,0 +1,187 @@
+﻿@{
+    ViewData["Title"] = "Administrador - Eventos | FarewellFest";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="https://localhost:7233/css/site.css">
+}
+
+<header>
+    <div class="container">
+        <a href="/" class="logo">
+            <img src="https://localhost:7233/images/logo.png" alt="FarewellFest Logo">
+        </a>
+        <a href="/" class="logo-text">FarewellFest</a>
+        <nav>
+            <ul>
+                <li><a href="/"><i class="fa-solid fa-backward"></i>&nbsp;&nbsp;Volver hacia atrás</a></li>
+                <li><a href="/Servicios"><i class="fa-solid fa-spa"></i>&nbsp;&nbsp;Administrar servicios</a></li>
+                <li><a href="/Eventos"><i class="fa-solid fa-calendar-days"></i></i>&nbsp;&nbsp;Administrar eventos</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+@model IEnumerable<GestorEventos.Servicios.Entidades.EventoViewModel>
+@{
+    ViewData["Title"] = "Gestión de Eventos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="events-homeadm">
+    <div class="container">
+        <h2 class="section-title">Administrar eventos</h2>
+        <a href="/Eventos/Create" class="service-btn">Crear un nuevo evento&nbsp;&nbsp;<i class="fa-solid fa-plus"></i></a>
+        <br />
+        <br />
+        @if (Model != null && Model.Any())
+        {
+            <div class="events-table-container">
+                <table class="events-table">
+                    <thead>
+                        <tr>
+                            <th>ID del evento</th>
+                            <th>ID de la cuenta</th>
+                            <th>Nombre</th>
+                            <th>Fecha del evento</th>
+                            <th>Cantidad de personas</th>
+                            <th>Tipo de evento</th>
+                            <th>ID del tipo de evento</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                @{
+                                    string tipoEventoDescripcion = item.IdTipoEvento switch
+                                    {
+                                        1 => "Fiesta",
+                                        2 => "Salida al río",
+                                        3 => "Tarde de Spa",
+                                        4 => "Actividades deportivas",
+                                        _ => "Otro"
+                                    };
+                                }
+                                <td>@Html.DisplayFor(modelitem => item.IdEvento)</td>
+                                <td>@Html.DisplayFor(modelitem => item.IdUsuario)</td>
+                                <td>@Html.DisplayFor(modelItem => item.NombreEvento)</td>
+                                <td>@item.FechaEvento.ToString("dd/MM/yyyy")</td>
+                                <td>@Html.DisplayFor(modelItem => item.CantidadPersonas) invitados</td>
+                                <td>@tipoEventoDescripcion</td>
+                                <td>@Html.DisplayFor(modelitem => item.IdTipoEvento)</td>
+                                <td><span class="event-status @item.EstadoEvento.ToLower()">@Html.DisplayFor(modelItem => item.EstadoEvento)</span></td>
+                                <td>
+                                    <a class="btn-details" onclick="openModal(@item.IdEvento)">
+                                        <i class='fa solid fa-circle-info'></i> Detalles
+                                    </a>
+                                    @if (item.EstadoEvento.ToLower() != "aprobado")
+                                    {
+                                        <form asp-action="aprobarevento">
+                                            <input type="hidden" asp-for="@item.IdEvento" />
+                                            <button type="submit" value="aprobar" class="btn-approve">
+                                                <i class="fa-solid fa-check"></i>&nbsp;&nbsp;Aprobar
+                                            </button>
+                                        </form>
+                                    }
+                                    @if (item.EstadoEvento.ToLower() != "rechazado")
+                                    {
+                                        <form asp-action="rechazarevento">
+                                            <input type="hidden" asp-for="@item.IdEvento" />
+                                            <button type="submit" value="rechazar" class="btn-reject">
+                                                <i class="fa-solid fa-xmark"></i>&nbsp;&nbsp;Rechazar
+                                            </button>
+                                        </form>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            @if (TempData["Message"] != null)
+            {
+                <p class="confirmation-message">@TempData["Message"]</p>
+                <a href="/Eventos" class="btn-backadm"><i class="fa-solid fa-backward-step">&nbsp;&nbsp;</i>Volver a la lista</a>
+            }
+            else
+            {
+                <p class="no-events">No hay eventos para mostrar.</p>
+            }
+        }
+    </div>
+</section>
+
+<div id="eventModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2><i class="fa-solid fa-circle-info"></i>&nbsp;&nbsp;Detalles del evento</h2>
+        <div id="modalContent"></div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        <script src="~/js/site.js"></script>
+    }
+
+    <script>
+        var modal = document.getElementById("eventModal");
+        var span = document.getElementsByClassName("close")[0];
+
+        function openModal(eventId) {
+            fetch(`/Eventos/GetEventDetails/${eventId}`)
+                .then(response => response.json())
+                .then(data => {
+                    let content = `<h3>${data.nombreEvento}</h3>`;
+                    content += `<p><i class="fa-solid fa-calendar-days"></i>&nbsp;&nbsp;Fecha: ${new Date(data.fechaEvento).toLocaleDateString()}</p>`;
+                    content += `<p><i class="fa-solid fa-users"></i>&nbsp;&nbsp;Cantidad de personas: ${data.cantidadPersonas}</p>`;
+                    content += `<h4><i class="fa-solid fa-spa"></i>&nbsp;&nbsp;Servicios contratados:</h4>`;
+
+                    let costoServicios = 0;
+                    if (data.servicios && data.servicios.length > 0) {
+                        content += `<ul>`;
+                        data.servicios.forEach(servicio => {
+                            content += `<li>${servicio.descripcion} - $${servicio.precioServicio.toLocaleString()}</li>`;
+                            costoServicios += servicio.precioServicio;
+                        });
+                        content += `</ul>`;
+                    } else {
+                        content += `<p>No se contrataron servicios.</p>`;
+                    }
+
+                    const costoFijo = 300000;
+                    const costoTotal = costoServicios + costoFijo;
+
+                    content += `<h4><i class="fa-solid fa-money-bill-wave"></i>&nbsp;&nbsp;Resumen de costos:</h4>`;
+                    content += `<p>Costo de servicios: $${costoServicios.toLocaleString()}</p>`;
+                    content += `<p>Costo fijo del evento: $${costoFijo.toLocaleString()}</p>`;
+                    content += `<p><strong>Costo total: $${costoTotal.toLocaleString()}</strong></p>`;
+
+                    document.getElementById("modalContent").innerHTML = content;
+                    modal.style.display = "block";
+                });
+        }
+
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+}

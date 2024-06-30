@@ -1,0 +1,68 @@
+﻿@model GestorEventos.Servicios.Entidades.Servicio
+
+@{
+    ViewData["Title"] = "Administrador - Crear servicio | FarewellFest";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="https://localhost:7233/css/site.css">
+}
+
+<header>
+    <div class="container">
+        <a href="/" class="logo">
+            <img src="https://localhost:7233/images/logo.png" alt="FarewellFest Logo">
+        </a>
+        <a href="/" class="logo-text">FarewellFest</a>
+        <nav>
+            <ul>
+                <li><a href="/Servicios"><i class="fa-solid fa-backward"></i>&nbsp;&nbsp;Volver hacia atrás</a></li>
+                <li><a href="/Servicios"><i class="fa-solid fa-spa"></i>&nbsp;&nbsp;Administrar servicios</a></li>
+                <li><a href="/Eventos"><i class="fa-solid fa-calendar-days"></i></i>&nbsp;&nbsp;Administrar eventos</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+
+<main>
+    <div class="container">
+        <h1 class="page-title">Crear nuevo servicio</h1>
+        <form asp-action="Create" class="event-form">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="Descripcion" class="control-label">
+                    <i class="fa-solid fa-file-text"></i>
+                    <span>Nombre del servicio:</span>
+                </label>
+                <input asp-for="Descripcion" class="form-control" placeholder="Ingresá la descripción del servicio" />
+                <span asp-validation-for="Descripcion" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="PrecioServicio" class="control-label">
+                    <i class="fa-solid fa-dollar-sign"></i>
+                    <span>Precio del servicio:</span>
+                </label>
+                <input asp-for="PrecioServicio" class="form-control" type="number" min="0" step="0.01" placeholder="Ingresá el precio del servicio" />
+                <span asp-validation-for="PrecioServicio" class="text-danger"></span>
+            </div>
+
+            <div class="form-group submit-group">
+                <input type="submit" value="Crear servicio" class="service-btn" />
+            </div>
+             <a href="/Servicios" class="service-btn">Volver sin guardar</a>
+        </form>
+    </div>
+</main>
+
+@section Scripts {
+    <script src="https://localhost:7233/js/site.js"></script>
+}

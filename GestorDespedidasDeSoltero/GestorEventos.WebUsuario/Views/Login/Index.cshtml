@@ -1,0 +1,656 @@
+﻿@{
+    ViewData["Title"] = "Iniciar sesión | FarewellFest";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="modals" href="~/global/modals.html " />
+    <link rel="icon" href="~/images/login-favicon.png" asp-append-version="true" />
+    <title>@ViewData["Title"]</title>
+    <style>
+        @@keyframes fade-in {
+            0% {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-20px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Red Hat Display', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-image: url('/images/background.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            overflow: hidden;
+        }
+
+            body::before {
+                content: '';
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: rgba(0, 0, 0, 0.4);
+                z-index: -1;
+            }
+
+        .container {
+            display: flex;
+            background-color: white;
+            width: 800px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            transform: scale(1.3);
+        }
+
+        .left {
+            background-color: #055b69;
+            padding: 40px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            position: relative;
+        }
+
+            .left img {
+                max-width: 100%;
+            }
+
+        .carousel-text {
+            margin-top: 45px;
+            margin-bottom: 20px;
+            max-width: 80%;
+            position: absolute;
+            top: 20%;
+            transform: translateY(-50%);
+            overflow: hidden;
+        }
+
+        .carousel-item {
+            display: none;
+            position: relative;
+            animation: slide-in 0.5s ease-out;
+        }
+
+            .carousel-item.active {
+                display: block;
+            }
+
+            .carousel-item h2, .carousel-item p {
+                margin: 10px 0;
+                animation: slide-in 0.5s ease-out;
+            }
+
+        @@keyframes slide-in {
+            0% {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+
+            100% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .carousel-indicators {
+            position: absolute;
+            bottom: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+        }
+
+            .carousel-indicators span {
+                display: block;
+                width: 10px;
+                height: 10px;
+                background-color: rgba(255, 255, 255, 0.5);
+                border-radius: 50%;
+                cursor: pointer;
+            }
+
+                .carousel-indicators span.active {
+                    background-color: white;
+                    width: 20px;
+                    transition: width 0.3s ease;
+                }
+
+        .right {
+            padding: 40px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+            .right h2 {
+                margin-top: 10px;
+                margin-bottom: 10px;
+                font-size: 24px;
+                color: #333;
+            }
+
+            .right label {
+                margin-bottom: 4px;
+                font-weight: bold;
+            }
+
+            .right .google-signin {
+                color: black;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 10px;
+                margin-top: 10px;
+                border: 1px solid #ccc;
+                border-radius: 150px;
+                cursor: pointer;
+                text-decoration: none;
+            }
+
+                .right .google-signin:hover {
+                    background-color: #f0f0f0;
+                    color: black;
+                }
+
+                .right .google-signin img {
+                    width: 20px;
+                    height: 20px;
+                    margin-right: 10px;
+                }
+
+            .right .terms {
+                display: flex;
+                justify-content: space-between;
+                margin-top: 20px;
+            }
+
+                .right .terms a {
+                    color: #055b6;
+                    ;
+                    text-decoration: none;
+                }
+
+                    .right .terms a:hover {
+                        text-decoration: underline;
+                    }
+
+            .right .help-text {
+                margin-top: 10px;
+                font-size: 12px;
+                color: #055b6;
+                font-weight: bold;
+                margin-left: 10px;
+                cursor: help;
+                text-align: right;
+            }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            padding: 20px;
+            border: none;
+            border-radius: 10px;
+            width: 30%;
+            position: relative;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+            .close:hover,
+            .close:focus {
+                color: black;
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+        .left.dragging {
+            cursor: grabbing;
+        }
+
+        .emote {
+            width: 25px;
+            height: 25px;
+            vertical-align: -5px;
+        }
+
+        .help-text::after,
+        .terms a::after,
+        .google-signin::after {
+            content: '';
+            display: inline-block;
+            width: 0;
+            height: 0;
+            margin-left: 5px;
+            vertical-align: middle;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out, width 0.3s ease-in-out, height 0.3s ease-in-out;
+        }
+
+        .logo-container {
+            position: fixed;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+        }
+
+        .circle {
+            width: 190px;
+            height: 190px;
+            border-radius: 50%;
+            background-color: #ffffff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+            .circle img {
+                width: 80%;
+                height: auto;
+            }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #055b69;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            z-index: 100;
+            display: none;
+            animation: fade-in 0.3s ease-in-out;
+        }
+
+            .notification:hover {
+                box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            }
+
+            .notification.show {
+                display: block;
+            }
+
+            .notification .close-btn {
+                margin-left: 10px;
+                cursor: pointer;
+            }
+
+        @@keyframes fade-in {
+            0% {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-20px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        @@keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @@keyframes slideIn {
+            from {
+                transform: translate(0, -20%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translate(0, 0);
+                opacity: 1;
+            }
+        }
+
+        @@keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+
+            to {
+                opacity: 0;
+            }
+        }
+
+        @@keyframes slideOut {
+            from {
+                transform: translate(0, 0);
+                opacity: 1;
+            }
+
+            to {
+                transform: translate(0, -20%);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="logoutNotification" class="notification">
+        <span>Cerraste la sesión de tu cuenta. ¡Hasta luego!</span>
+        <span class="close-btn">&times;</span>
+    </div>
+    <div class="logo-container">
+        <div class="circle">
+            <img src="~/images/logo.png" alt="Logo">
+        </div>
+    </div>
+    <div class="container">
+        <div class="left">
+            <div class="carousel-text">
+                <div class="carousel-item active">
+                    <h2>Despedidas únicas  <img src="~/images/sparkles-emote.png" alt="Emoji" class="emote"></h2>
+                    <p>Planifica la mejor despedida de soltero/a con nuestra plataforma de gestión, dónde quieras y cuando quieras.</p>
+                </div>
+                <div class="carousel-item">
+                    <h2>Máxima personalización <img src="~/images/celebration-emote.png" alt="Emoji" class="emote"></h2>
+                    <p>Creá un paquete a medida para tu despedida. Amplia variedad de opciones adaptadas a tus preferencias y presupuesto.</p>
+                </div>
+                <div class="carousel-item">
+                    <h2>Sin complicaciones <img src="~/images/winking.face-emote.png" alt="Emoji" class="emote"></h2>
+                    <p>Coordinamos todos los detalles para que disfrutes de una celebración inolvidable sin preocupaciones.</p>
+                </div>
+            </div>
+            <div class="carousel-indicators">
+                <span class="active" data-slide="0"></span>
+                <span data-slide="1"></span>
+                <span data-slide="2"></span>
+            </div>
+        </div>
+        <div class="right">
+            <h2 class="label">¡Bienvenido/a! <img src="~/images/waving.hand-emote.png" alt="Emoji" class="emote"></h2>
+            <a class="google-signin" asp-controller="Login" asp-action="Login">
+                <img src="~/images/google-logo.png" alt="Logo de Google">
+                <span>Iniciar sesión con Google</span>
+            </a>
+            <span class="help-text" onclick="showHelpModal()">¿Problemas para ingresar?</span>
+            <div class="terms">
+                <span onclick="showTermsModal()">Al continuar, aceptás los <a href="#">términos y condiciones.</a></span>
+            </div>
+        </div>
+    </div>
+
+    <div id="termsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('tosModal')">&times;</span>
+            <h2>Términos y condiciones</h2>
+            <p>Última actualización el 14 de junio, 2024</p>
+            <!-- Contenido -->
+            <ol>
+                <li>
+                    <h3><strong>Aceptación de los términos y condiciones</strong></h3>
+                    <p>Al dar uso de nuestro servicio, usted acepta cumplir con estos términos y condiciones en su totalidad. Si no está de acuerdo con alguno de estos términos, le pedimos que no utilice nuestros servicios.</p>
+                </li>
+                <li>
+                    <h3><strong>Descripción del servicio</strong></h3>
+                    <p>Nuestro servicio consiste en la organización y gestión de eventos de despedidas de soltero/a, incluyendo la planificación, coordinación de actividades, reservas de lugares, transporte y cualquier otro servicio relacionado que pueda ser solicitado.</p>
+                </li>
+                <li>
+                    <h3><strong>Proceso de reserva</strong></h3>
+                    <p>Para reservar nuestros servicios, deberá completar el formulario de reserva online y realizar el pago correspondiente. Una vez que hayamos recibido el pago, confirmaremos su reserva y empezaremos con la organización del evento.</p>
+                </li>
+                <li>
+                    <h3><strong>Precios y pagos</strong></h3>
+                    <p>Los precios de nuestros servicios se mostrarán claramente en nuestro sitio web o serán proporcionados a solicitud. Todos los pagos deberán realizarse por adelantado, a menos que se acuerde lo contrario. Aceptamos diferentes métodos de pago, los cuales se indicarán durante el proceso de reserva.</p>
+                </li>
+                <li>
+                    <h3><strong>Cancelaciones y reembolsos</strong></h3>
+                    <p>Las cancelaciones deben realizarse por escrito y estarán sujetas a los siguientes cargos:</p>
+                    <ul>
+                        <li>Cancelaciones con más de 30 días de anticipación: reembolso del 100% menos una tarifa de cancelación.</li>
+                        <li>Cancelaciones entre 15 y 30 días de anticipación: reembolso del 50% del costo total.</li>
+                        <li>Cancelaciones con menos de 15 días de anticipación: no habrá reembolso.</li>
+                    </ul>
+                </li>
+                <li>
+                    <h3><strong>Responsabilidades del cliente</strong></h3>
+                    <p>El cliente es responsable de proporcionar información precisa y completa durante el proceso de reserva, así como de cumplir con los requisitos y normas establecidas para cada actividad o evento. Cualquier daño o perjuicio causado durante el evento será responsabilidad del cliente.</p>
+                </li>
+                <li>
+                    <h3><strong>Limitación de responsabilidad</strong></h3>
+                    <p>Nuestra empresa no será responsable de ningún daño, pérdida o lesión que pueda ocurrir durante el evento, a menos que sea directamente causado por negligencia comprobada de nuestra parte. El cliente asume todos los riesgos inherentes a las actividades realizadas durante el evento.</p>
+                </li>
+                <li>
+                    <h3><strong>Privacidad y protección de datos</strong></h3>
+                    <p>Recopilamos y utilizamos la información personal del cliente únicamente para proporcionar nuestros servicios y no la compartiremos con terceros sin su consentimiento previo, salvo que sea requerido por ley.</p>
+                </li>
+                <li>
+                    <h3><strong>Propiedad intelectual</strong></h3>
+                    <p>Todos los derechos de propiedad intelectual relacionados con nuestros servicios, incluidos logotipos, marcas y contenido, son propiedad exclusiva de nuestra empresa y están protegidos por las leyes aplicables.</p>
+                </li>
+                <li>
+                    <h3><strong>Ley aplicable y jurisdicción</strong></h3>
+                    <p>Estos términos y condiciones se rigen por las leyes de Coronel Suárez, Provincia de Buenos Aires, Argentina, donde se encuentra nuestra empresa. Cualquier disputa que surja en relación con estos Términos y Condiciones estará sujeta a la jurisdicción exclusiva de los tribunales correspondientes.</p>
+                </li>
+            </ol>
+            <p>Estos términos y condiciones pueden ser actualizados periódicamente. Le recomendamos revisarlos regularmente antes de utilizar nuestros servicios.</p>
+        </div>
+    </div>
+
+    <div id="helpModal" class="modal">
+        <div class="modal-content">
+            <span class="close" title="Clic para cerrar aquí, fuera de la ventana o ESC" onclick="closeModal('helpModal')">&times;</span>
+            <h2>¿Problemas para ingresar?</h2>
+            <p>Si tenés alguna dificultad para iniciar sesión en nuestra plataforma, primero verificá el estado de la misma en nuestra <a href="https://farewellfest.instatus.com">página de estado.</a></p>
+            <iframe src="https://farewellfest.instatus.com/embed-status/afc47508/light-md"
+                    width="355"
+                    height="61"
+                    frameBorder="0"
+                    scrolling="no"
+                    style="border: none;">
+            </iframe>
+            <p>Si no hay incidentes reportados, por favor envía un correo a <a href="mailto:soporte@farewellfest.com">soporte@farewellfest.com</a> comentando tu caso. Estamos para ayudarte.</p>
+        </div>
+    </div>
+
+    <script>
+        function showTermsModal() {
+            document.getElementById('termsModal').style.display = 'block';
+        }
+
+        function showHelpModal() {
+            document.getElementById('helpModal').style.display = 'block';
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.style.animation = 'fadeOut 0.3s ease-out forwards, slideOut 0.3s ease-out forwards';
+            setTimeout(() => {
+                modal.style.display = 'none';
+                modal.style.animation = '';
+            }, 300);
+        }
+
+
+        function setupModalEvents() {
+            const modals = document.querySelectorAll('.modal');
+
+            window.addEventListener('click', function (event) {
+                modals.forEach(modal => {
+                    if (event.target === modal) {
+                        closeModal(modal.id);
+                    }
+                });
+            });
+
+            window.addEventListener('keydown', function (event) {
+                if (event.key === 'Escape') {
+                    modals.forEach(modal => {
+                        if (modal.style.display === 'block') {
+                            closeModal(modal.id);
+                        }
+                    });
+                }
+            });
+        }
+        setupModalEvents();
+
+        const items = document.querySelectorAll('.carousel-item');
+        const indicators = document.querySelectorAll('.carousel-indicators span');
+        let currentItem = 0;
+
+        function showItem(index) {
+            items[currentItem].classList.remove('active');
+            indicators[currentItem].classList.remove('active');
+            currentItem = index;
+            items[currentItem].classList.add('active');
+            indicators[currentItem].classList.add('active');
+        }
+
+        indicators.forEach((indicator, index) => {
+            indicator.addEventListener('click', () => {
+                showItem(index);
+            });
+        });
+
+        setInterval(() => {
+            let nextItem = (currentItem + 1) % items.length;
+            showItem(nextItem);
+        }, 6000);
+
+        let isDragging = false;
+        let startPos = 0;
+        let currentTranslate = 0;
+        let prevTranslate = 0;
+
+        const leftPanel = document.querySelector('.left');
+        const carouselItems = document.querySelectorAll('.carousel-item');
+
+        leftPanel.addEventListener('mousedown', dragStart);
+        leftPanel.addEventListener('mouseup', dragEnd);
+        leftPanel.addEventListener('mousemove', dragAction);
+        leftPanel.addEventListener('mouseleave', dragEnd);
+
+        function dragStart(event) {
+            isDragging = true;
+            startPos = event.clientX;
+            leftPanel.classList.add('dragging');
+        }
+
+        function dragEnd() {
+            isDragging = false;
+            leftPanel.classList.remove('dragging');
+            prevTranslate = currentTranslate;
+        }
+
+        function dragAction(event) {
+            if (!isDragging) return;
+            const currentPos = event.clientX;
+            const diff = currentPos - startPos;
+
+            if (Math.abs(diff) > 100) {
+                if (diff > 0) {
+                    showPrevItem();
+                } else {
+                    showNextItem();
+                }
+                dragEnd();
+            }
+        }
+
+        function showNextItem() {
+            let nextItem = (currentItem + 1) % items.length;
+            showItem(nextItem);
+        }
+
+        function showPrevItem() {
+            let prevItem = (currentItem - 1 + items.length) % items.length;
+            showItem(prevItem);
+        }
+
+        function showItem(index) {
+            items[currentItem].classList.remove('active');
+            indicators[currentItem].classList.remove('active');
+            currentItem = index;
+            items[currentItem].classList.add('active');
+            indicators[currentItem].classList.add('active');
+        }
+
+        const notification = document.getElementById('logoutNotification');
+        const closeBtn = notification.querySelector('.close-btn');
+
+        const url = window.location.href;
+        const isLogout = url.includes('/Login/Logout');
+
+        if (isLogout) {
+            showNotification();
+            setTimeout(() => {
+                hideNotification();
+            }, 15000);
+        }
+
+        function showNotification() {
+            notification.classList.add('show');
+        }
+
+        function hideNotification() {
+            notification.classList.remove('show');
+        }
+
+        closeBtn.addEventListener('click', hideNotification);
+    </script>
+
+    @section Scripts {
+    }
+</body>
+</html>

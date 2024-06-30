@@ -1,0 +1,169 @@
+﻿@{
+    ViewData["Title"] = "Plataforma | FarewellFest";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model IEnumerable<GestorEventos.Servicios.Entidades.EventoViewModel>?
+@section Styles {
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="~/css/site.css" />
+}
+
+<header>
+    <div class="container">
+        <a href="/" class="logo">
+            <img src="images/logo.png" alt="FarewellFest Logo">
+        </a>
+        <a href="/" class="logo-text">FarewellFest</a>
+        <nav>
+            <ul>
+                <li><a href="/"><i class="fa-solid fa-backward"></i>&nbsp;&nbsp;Volver hacia atrás</a></li>
+                <li><a onclick="showModal('faqModal')"><i class="fa-solid fa-question"></i>&nbsp;&nbsp;Preguntas frecuentes</a></li>
+                <a><i class="fa-solid fa-user"></i>&nbsp;&nbsp;@User.Identity.Name&nbsp;</a>
+                <a href="Login/Logout" class="btn-logout"><i class="fa-solid fa-right-from-bracket"></i></a>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<section class="mainhome">
+    <div class="container">
+        <h1>
+            @{
+                var hora = DateTime.Now.Hour;
+                string saludo;
+
+                if (hora >= 5 && hora < 12)
+                    saludo = "Buenos días";
+                else if (hora >= 12 && hora < 18)
+                    saludo = "Buenas tardes";
+                else
+                    saludo = "Buenas noches";
+            }
+
+            ¡@saludo, @User.Identity.Name!
+        </h1>
+    </div>
+    <a href="/Eventos/Create" class="service-btn">Reservar un nuevo evento&nbsp;&nbsp;<i class="fa-solid fa-plus"></i></a>
+    </section>
+</section>
+
+<section class="events-home">
+    <div class="container">
+        <h2 class="section-title">Eventos que creaste</h2>
+        @if (Model != null && Model.Any())
+        {
+            <div class="events-table-container">
+                <table class="events-table">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Fecha del evento</th>
+                            <th>Cantidad de personas</th>
+                            <th>Tipo de evento</th>
+                            <th>Servicios contratados</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                @{
+                                    string tipoEventoDescripcion = item.IdTipoEvento switch
+                                    {
+                                        1 => "Fiesta",
+                                        2 => "Salida al río",
+                                        3 => "Tarde de Spa",
+                                        4 => "Actividades deportivas"
+                                    };
+                                }
+                                <td>@Html.DisplayFor(modelItem => item.NombreEvento)</td>
+                                <td>@item.FechaEvento.ToString("dd/MM/yyyy")</td>
+                                <td>@Html.DisplayFor(modelItem => item.CantidadPersonas) invitados</td>
+                                <td>@tipoEventoDescripcion</td>
+                                <td>
+                                    <a class="btn-details" onclick="openModal(@item.IdEvento)">
+                                        <i class='fa solid fa-circle-info'></i>&nbsp;&nbsp;Detalles
+                                    </a>
+                                </td>
+                                <td><span class="event-status @item.EstadoEvento.ToLower()">@Html.DisplayFor(modelItem => item.EstadoEvento)</span></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <p class="no-events">No hay eventos para mostrar.</p>
+        }
+    </div>
+</section>
+
+<div id="eventModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2><i class="fa-solid fa-circle-info"></i>&nbsp;&nbsp;Detalles del evento</h2>
+        <div id="modalContent"></div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        <script src="~/js/site.js"></script>
+    }
+
+    <script>
+        var modal = document.getElementById("eventModal");
+        var span = document.getElementsByClassName("close")[0];
+
+        function openModal(eventId) {
+            fetch(`/Eventos/GetEventDetails/${eventId}`)
+                .then(response => response.json())
+                .then(data => {
+                    let content = `<h3>${data.nombreEvento}</h3>`;
+                    content += `<p><i class="fa-solid fa-calendar-days"></i>&nbsp;&nbsp;Fecha: ${new Date(data.fechaEvento).toLocaleDateString()}</p>`;
+                    content += `<p><i class="fa-solid fa-users"></i>&nbsp;&nbsp;Cantidad de personas: ${data.cantidadPersonas}</p>`;
+                    content += `<h4><i class="fa-solid fa-spa"></i>&nbsp;&nbsp;Servicios contratados:</h4>`;
+
+                    let costoServicios = 0;
+                    if (data.servicios && data.servicios.length > 0) {
+                        content += `<ul>`;
+                        data.servicios.forEach(servicio => {
+                            content += `<li>${servicio.descripcion} - $${servicio.precioServicio.toLocaleString()}</li>`;
+                            costoServicios += servicio.precioServicio;
+                        });
+                        content += `</ul>`;
+                    } else {
+                        content += `<p>No se contrataron servicios.</p>`;
+                    }
+
+                    const costoFijo = 300000;
+                    const costoTotal = costoServicios + costoFijo;
+
+                    content += `<h4><i class="fa-solid fa-money-bill-wave"></i>&nbsp;&nbsp;Resumen de costos:</h4>`;
+                    content += `<p>Costo de servicios: $${costoServicios.toLocaleString()}</p>`;
+                    content += `<p>Costo fijo del evento: $${costoFijo.toLocaleString()}</p>`;
+                    content += `<p><strong>Costo total: $${costoTotal.toLocaleString()}</strong></p>`;
+
+                    document.getElementById("modalContent").innerHTML = content;
+                    modal.style.display = "block";
+                });
+        }
+
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+}

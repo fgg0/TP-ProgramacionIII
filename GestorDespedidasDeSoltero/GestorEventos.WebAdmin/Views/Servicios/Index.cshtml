@@ -1,0 +1,81 @@
+﻿@{
+    ViewData["Title"] = "Administrador - Servicios | FarewellFest";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="https://localhost:7233/css/site.css">
+}
+
+<header>
+    <div class="container">
+        <a href="/" class="logo">
+            <img src="https://localhost:7233/images/logo.png" alt="FarewellFest Logo">
+        </a>
+        <a href="/" class="logo-text">FarewellFest</a>
+        <nav>
+            <ul>
+                <li><a href="/"><i class="fa-solid fa-backward"></i>&nbsp;&nbsp;Volver hacia atrás</a></li>
+                <li><a href="/Servicios"><i class="fa-solid fa-spa"></i>&nbsp;&nbsp;Administrar servicios</a></li>
+                <li><a href="/Eventos"><i class="fa-solid fa-calendar-days"></i></i>&nbsp;&nbsp;Administrar eventos</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+@model IEnumerable<GestorEventos.Servicios.Entidades.Servicio>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="events-homeadm">
+    <div class="container">
+        <h2 class="section-title">Administrar servicios</h2>
+        <a href="/Servicios/Create" class="service-btn">Crear un nuevo servicio&nbsp;&nbsp;<i class="fa-solid fa-plus"></i></a>
+        <br />
+        <br />
+        @if (Model != null && Model.Any())
+        {
+            <div class="events-table-container">
+                <table class="events-table">
+                    <thead>
+                        <tr>
+                            <th>ID del servicio</th>
+                            <th>Servicio</th>
+                            <th>Precio</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => item.IdServicio)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Descripcion)</td>
+                                <td>@Html.DisplayFor(modelItem => item.PrecioServicio)</td>
+                                <td>
+                                    @Html.Raw($"<a href='{Url.Action("Edit", new { id = item.IdServicio })}' class='btn-details'><i class='fas fa-edit'></i> Editar</a>")
+                                    @Html.Raw($"<a href='{Url.Action("Delete", new { id = item.IdServicio })}' class='btn-reject'><i class='fas fa-trash-alt'></i> Eliminar</a>")
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <p class="no-events">No hay servicios para mostrar.</p>
+        }
+    </div>
+</section>
+
+
+@section Scripts {
+    <script src="https://localhost:7233/js/site.js"></script>
+}

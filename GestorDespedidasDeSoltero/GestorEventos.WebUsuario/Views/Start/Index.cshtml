@@ -1,0 +1,225 @@
+﻿@{
+    ViewData["Title"] = "Inicio | FarewellFest";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="~/css/site.css" />
+}
+
+<header>
+    <div class="container">
+        <a href="/" class="logo">
+            <img src="images/logo.png" alt="FarewellFest Logo">
+        </a>
+        <a href="/" class="logo-text">FarewellFest</a>
+        <nav>
+            <ul>
+                <li><a onclick="showModal('aboutModal')"><i class="fa-solid fa-address-card"></i>&nbsp;&nbsp;Sobre nosotros</a></li>
+                <li><a onclick="showModal('faqModal')"><i class="fa-solid fa-question"></i>&nbsp;&nbsp;Preguntas frecuentes</a></li>
+                <a href="Login" class="btn-start">Comenzar&nbsp;&nbsp;<i class="fa-solid fa-play"></i></a>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<main>
+    <div class="container">
+        <h1>∼ Dónde las experiencias inolvidables suceden ∼</h1>
+        <p>FarewellFest es una plataforma de gestión de eventos en la cuál tu despedida de soltero/a soñada se vuelve realidad. Armá tu paquete y nosotros nos encargamos de todo.</p>
+    </div>
+</main>
+
+<div class="scroll-down">
+    <p>Bajá para descubrir más <span class="arrow">&#x2193;</span></p>
+</div>
+
+<section class="event-types">
+    <div class="container">
+        <h1>¿Qué eventos organizamos?</h1>
+        <div class="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item">
+                    <img src="images/party-image.png" alt="Fiesta en un salón">
+                    <h3>Fiesta</h3>
+                    <span class="badge">LA OPCIÓN MÁS POPULAR</span>
+                    <p>Disfruta de una noche inolvidable con tus amigos en un salón exclusivo. Ofrecemos música en vivo, DJ, barra libre y servicio de catering. Personaliza tu evento con decoraciones temáticas, actividades divertidas para una celebración que recordarás para siempre.</p>
+                </div>
+                <div class="carousel-item">
+                    <img src="images/exit-to-river.png" alt="Salida al río">
+                    <h3>Salida al río</h3>
+                    <p>Escapa de la rutina y vive una aventura al aire libre con una salida al río. Organizamos paseos en bote, actividades acuáticas, picnics y momentos de relajación en un entorno natural. Perfecto para aquellos que aman la naturaleza, buscan una experiencia única y refrescante.</p>
+                </div>
+                <div class="carousel-item">
+                    <img src="images/spa-image.png" alt="Tarde de Spa">
+                    <h3>Tarde de Spa</h3>
+                    <p>Relájate y rejuvenece antes de tu gran día con una tarde de spa. Ofrecemos masajes, tratamientos de belleza, acceso a sauna y jacuzzi, todo en un ambiente tranquilo con grandes comodidades. Ideal para desconectar y recargar energías en compañía de tus seres queridos.</p>
+                </div>
+                <div class="carousel-item">
+                    <img src="images/ping.pong-image.png" alt="Actividades deportivas">
+                    <h3>Actividades deportivas</h3>
+                    <p>Si sos un amante del deporte y la adrenalina, nuestras actividades deportivas son la opción perfecta. Desde partidos de fútbol, voleibol hasta ping pong y metegol, garantizamos diversión, emoción para ti y tus amigos. Forma equipos para competir en un ambiente lleno de energía.</p>
+                </div>
+            </div>
+            <button class="carousel-control prev">&lt;</button>
+            <button class="carousel-control next">&gt;</button>
+        </div>
+    </div>
+</section>
+<section class="services">
+    <div class="container">
+        <h2>Servicios adicionales que ofrecemos</h2>
+        <div class="service-buttons">
+            <button class="service-btn" onclick="showModal('transporteModal')"> <img src="images/bus-emote.png" alt="Emoji" class="emote"> Transporte</button>
+            <button class="service-btn" onclick="showModal('cateringModal')"><img src="images/pot.of.food-emote.png" alt="Emoji" class="emote"> Catering</button>
+            <button class="service-btn" onclick="showModal('barraModal')"><img src="images/cocktail.glass-emote.png" alt="Emoji" class="emote"> Barra de tragos</button>
+            <button class="service-btn" onclick="showModal('djModal')"><img src="images/optical.disk-emote.png" alt="Emoji" class="emote"> DJ</button>
+            <button class="service-btn" onclick="showModal('tarjetasModal')"><img src="images/envelope.with.arrow-emote.png" alt="Emoji" class="emote"> Tarjetas de invitación</button>
+            <button class="service-btn" onclick="showModal('tematicaModal')"><img src="images/heart.decoration-emote.png" alt="Emoji" class="emote"> Temática de decoración</button>
+            <button class="service-btn" onclick="showModal('karaokeModal')"><img src="images/microphone-emote.png" alt="Emoji" class="emote"> Karaoke</button>
+            <button class="service-btn" onclick="showModal('cotillonModal')"><img src="images/performing.arts-emote.png" alt="Emoji" class="emote"> Cotillón y disfraces</button>
+            <button class="service-btn" onclick="showModal('fotografoModal')"><img src="images/camera.with.flash-emote.png" alt="Emoji" class="emote"> Fotógrafo y cabina de fotos</button>
+        </div>
+        <p>Hacé clic en un servicio para obtener más información.</p>
+    </div>
+</section>
+
+<div id="transporteModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('transporteModal')">&times;</span>
+        <h2>Transporte</h2>
+        <img src="images/autobus-gif.gif" alt="GIF" class="service-gif">
+        <p>Ofrecemos servicios de transporte seguro y confiable para ti y tus invitados. Desde minibuses hasta limusinas, nos aseguramos de que lleguen a tiempo y con estilo.</p>
+    </div>
+</div>
+
+<div id="cateringModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('cateringModal')">&times;</span>
+        <h2>Catering</h2>
+        <img src="images/catering-gif.gif" alt="GIF" class="service-gif">
+        <p>Ofrecemos catering personalizado para todo tipo de eventos. Nuestro equipo de chefs expertos y personal capacitado se especializa en crear experiencias gastronómicas memorables, adaptadas a tus gustos y necesidades. </p>
+    </div>
+</div>
+
+<div id="barraModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('barraModal')">&times;</span>
+        <h2>Barra de tragos</h2>
+        <img src="images/barra.tragos-gif.gif" alt="GIF" class="service-gif">
+        <p>Nuestro servicio de barra de tragos incluye bartenders profesionales y una amplia selección de bebidas para satisfacer todos los gustos. Cócteles personalizados y presentación impecable garantizada.</p>
+    </div>
+</div>
+
+<div id="djModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('djModal')">&times;</span>
+        <h2>DJ</h2>
+        <img src="images/dj-gif.gif" alt="GIF" class="service-gif">
+        <p>Contamos con DJs experimentados que se adaptan a tu estilo musical y mantienen la pista de baile llena toda la noche. Equipo de sonido de alta calidad incluido.</p>
+    </div>
+</div>
+
+<div id="tarjetasModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('tarjetasModal')">&times;</span>
+        <h2>Tarjetas de invitación</h2>
+        <img src="images/tarjetas-gif.gif" alt="GIF" class="service-gif">
+        <p>Diseñamos e imprimimos tarjetas de invitación personalizadas que reflejan el estilo de tu evento. Opciones digitales e impresas disponibles.</p>
+    </div>
+</div>
+
+<div id="tematicaModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('tematicaModal')">&times;</span>
+        <h2>Temática de decoración</h2>
+        <img src="images/decoracion-gif.gif" alt="GIF" class="service-gif">
+        <p>Transformamos el espacio de tu evento con decoraciones temáticas únicas. Desde elegante y minimalista hasta extravagante y llamativo, creamos la atmósfera perfecta.</p>
+    </div>
+</div>
+
+<div id="karaokeModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('karaokeModal')">&times;</span>
+        <h2>Karaoke</h2>
+        <img src="images/karaoke-gif.gif" alt="GIF" class="service-gif">
+        <p>Añade diversión a tu evento con nuestro servicio de karaoke. Amplio catálogo de canciones, pantallas de alta definición y micrófonos profesionales incluidos.</p>
+    </div>
+</div>
+
+<div id="cotillonModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('cotillonModal')">&times;</span>
+        <h2>Cotillón y disfraces</h2>
+        <img src="images/cotillon-gif.gif" alt="GIF" class="service-gif">
+        <p>Proporcionamos una variedad de accesorios divertidos, sombreros, antifaces y disfraces para añadir un toque extra de diversión y memorabilidad a tu evento.</p>
+    </div>
+</div>
+
+<div id="fotografoModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('fotografoModal')">&times;</span>
+        <h2>Fotógrafo y cabina de fotos</h2>
+        <img src="images/fotografo-gif.gif" alt="GIF" class="service-gif">
+        <p>Capturamos los momentos más especiales de tu evento con fotógrafos profesionales. También ofrecemos cabinas de fotos divertidas con fondos personalizados.</p>
+    </div>
+</div>
+
+<section class="feedback">
+    <div class="container">
+        <h2>Opiniones sobre nuestro servicio</h2>
+        <div class="feedback-container">
+            <div class="feedback-track">
+                <div class="feedback-item">
+                    <p>"¡Excelente experiencia! Hicieron que mi despedida de soltera fuera perfecta."</p>
+                    <p class="author">- María Ramos</p>
+                </div>
+                <div class="feedback-item">
+                    <p>"Organización impecable y atención personalizada. Superó todas mis expectativas"</p>
+                    <p class="author">- Juan Pereyra</p>
+                </div>
+                <div class="feedback-item">
+                    <p>"La fiesta fue un éxito total. Gracias por hacer realidad nuestro sueño."</p>
+                    <p class="author">- Ana Gonzalez</p>
+                </div>
+                <div class="feedback-item">
+                    <p>"Profesionalismo y creatividad en cada detalle. Lo recomiendo 100/100."</p>
+                    <p class="author">- Carlos Moro</p>
+                </div>
+                <div class="feedback-item">
+                    <p>"FarewellFest transformó nuestra idea en una celebración inolvidable."</p>
+                    <p class="author">- Laura Soto</p>
+                </div>
+                <div class="feedback-item">
+                    <p>"¡Excelente experiencia! Hicieron que mi despedida de soltera fuera perfecta."</p>
+                    <p class="author">- María Ramos</p>
+                </div>
+                <div class="feedback-item">
+                    <p>"Organización impecable y atención personalizada. Superó todas mis expectativas"</p>
+                    <p class="author">- Juan Pereyra</p>
+                </div>
+                <div class="feedback-item">
+                    <p>"La fiesta fue un éxito total. Gracias por hacer realidad nuestro sueño."</p>
+                    <p class="author">- Ana Gonzalez</p>
+                </div>
+                <div class="feedback-item">
+                    <p>"Profesionalismo y creatividad en cada detalle. Lo recomiendo 100/100."</p>
+                    <p class="author">- Carlos Moro</p>
+                </div>
+                <div class="feedback-item">
+                    <p>"FarewellFest transformó nuestra idea en una celebración inolvidable."</p>
+                    <p class="author">- Laura Soto</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script src="~/js/site.js"></script>
+}

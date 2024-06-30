@@ -1,0 +1,74 @@
+﻿@model GestorEventos.Servicios.Entidades.Servicio
+
+@{
+    ViewData["Title"] = "Administrador - Crear servicio | FarewellFest";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="https://localhost:7233/css/site.css">
+}
+
+<header>
+    <div class="container">
+        <a href="/" class="logo">
+            <img src="https://localhost:7233/images/logo.png" alt="FarewellFest Logo">
+        </a>
+        <a href="/" class="logo-text">FarewellFest</a>
+        <nav>
+            <ul>
+                <li><a href="/Servicios"><i class="fa-solid fa-backward"></i>&nbsp;&nbsp;Volver hacia atrás</a></li>
+                <li><a href="/Servicios"><i class="fa-solid fa-spa"></i>&nbsp;&nbsp;Administrar servicios</a></li>
+                <li><a href="/Eventos"><i class="fa-solid fa-calendar-days"></i></i>&nbsp;&nbsp;Administrar eventos</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<main>
+    <div class="container">
+        <h1 class="page-title">Eliminar servicio</h1>
+        <div class="event-form">
+            <h3 class="confirmation-message">¿Estás seguro de que querés eliminar este servicio?</h3>
+
+            <div class="form-box">
+                <h2 class="box-title"><i class="fa-solid fa-info-circle"></i>&nbsp;&nbsp;Detalles del servicio</h2>
+                <div class="form-group">
+                    <label class="control-label">
+                        <i class="fa-solid fa-hashtag"></i>
+                        <span>ID del servicio:</span>
+                    </label>
+                    <input class="form-control" value="@Model.IdServicio" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="control-label">
+                        <i class="fa-solid fa-file-text"></i>
+                        <span>Descripción:</span>
+                    </label>
+                    <input class="form-control" value="@Model.Descripcion" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="control-label">
+                        <i class="fa-solid fa-dollar-sign"></i>
+                        <span>Precio del servicio:</span>
+                    </label>
+                    <input class="form-control" value="@Model.PrecioServicio.ToString("C")" readonly />
+                </div>
+            </div>
+
+            <form asp-action="Delete" asp-route-id="@Model.IdServicio" class="form-group submit-group">
+                <input type="submit" value="Eliminar" class="service-btn btn-danger" />
+            </form>
+                <a href="/Servicios" class="service-btn">Volver sin guardar</a>
+        </div>
+    </div>
+</main>
+
+@section Scripts {
+    <script src="https://localhost:7233/js/site.js"></script>
+}
